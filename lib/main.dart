@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tamra_task/data/controllers/app_controller.dart';
+import 'package:tamra_task/features/chart_view/presentation/views/chart_view.dart';
 import 'package:tamra_task/features/home_view/presentation/views/home_view.dart';
 
 void main() async {
@@ -32,6 +34,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
+        Get.put(AppController());
         return GetMaterialApp(
             title: "Tamra Task",
             theme: ThemeData(
@@ -45,7 +48,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             // supportedLocales: [
             //   Locale('en', 'US'),
             // ],
-            home: const HomeView());
+            home:  HomeView());
       },
     );
   }

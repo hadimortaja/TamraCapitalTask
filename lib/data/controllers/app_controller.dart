@@ -1,10 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:candlesticks/candlesticks.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tamra_task/features/chart_view/presentation/views/chart_view.dart';
 
 class AppController extends GetxController {
@@ -67,4 +71,70 @@ class AppController extends GetxController {
       Get.offAll(ChartView());
     }
   }
+  //Excel File
+  List<Candle> candles = [];
+  String pathFile = "";
+  List dataCsv = [];
+
+  Future<List<Candle>> _loadCSV(pathNew) async {
+    final lines = File(pathNew).readAsLinesSync();
+    lines.removeAt(0);
+    for (var line in lines) {
+      List<String> values = line.split(',');
+
+      dataCsv.add({
+        "Date": values[0].toString(),
+        "Open": values[1].toString(),
+        "High": values[2].toString(),
+        "Low": values[3].toString(),
+        "Close": values[4].toString(),
+        "Volume": values[6].toString(),
+      });
+    }
+    print(dataCsv);
+    return (dataCsv)
+        .map((e) => Candle.fromJson([
+      DateTime.parse(e["Date"]).millisecondsSinceEpoch,
+      e["Open"],
+      e["High"],
+      e["Low"],
+      e["Close"],
+      e["Volume"],
+    ]))
+        .toList()
+        .reversed
+        .toList();
+  }
+
+  Future openFile({required String url, String? fileName}) async {
+    final file = await downloadFile(url, fileName!);
+    if (file == null) return;
+
+    _loadCSV(file.path).then((value) {
+      // setState(() {
+        candles = value;
+      // });
+      update();
+    });
+  }
+
+  Future<File?> downloadFile(String url, String? name) async {
+    final appStorage = await getApplicationDocumentsDirectory();
+    final file = File('${appStorage.path}/$name');
+    try {
+      final resonse = await Dio().get(url,
+          options: Options(
+              responseType: ResponseType.bytes,
+              followRedirects: false,
+              receiveTimeout: 0));
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(resonse.data);
+      await raf.close();
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+
 }

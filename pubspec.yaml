@@ -38,6 +38,13 @@ dependencies:
   flutter_screenutil: ^5.6.0
   get: ^4.6.5
   local_auth: 2.1.2
+  candlesticks: ^2.1.0
+  dio: ^4.0.6
+  excel: ^2.0.1
+  path_provider: ^2.0.12
+  open_file: ^3.2.1
+  csv: ^5.0.1
+  syncfusion_flutter_datepicker: ^20.4.44
 
 dev_dependencies:
   flutter_test:
@@ -62,9 +69,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -77,10 +83,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Arabic-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

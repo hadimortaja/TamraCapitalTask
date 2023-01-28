@@ -42,10 +42,9 @@ dependencies:
   dio: ^4.0.6
   excel: ^2.0.1
   path_provider: ^2.0.12
-  open_file: ^3.2.1
   csv: ^5.0.1
-  syncfusion_flutter_datepicker: ^20.4.44
-
+  syncfusion_flutter_charts: ^20.4.44
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -71,12 +71,12 @@ class AppController extends GetxController {
       Get.offAll(ChartView());
     }
   }
+
   //Excel File
-  List<Candle> candles = [];
+  List<ChartData> candles = [];
   String pathFile = "";
   List dataCsv = [];
-
-  Future<List<Candle>> _loadCSV(pathNew) async {
+  Future<List<ChartData>> _loadCSV(pathNew) async {
     final lines = File(pathNew).readAsLinesSync();
     lines.removeAt(0);
     for (var line in lines) {
@@ -93,16 +93,13 @@ class AppController extends GetxController {
     }
     print(dataCsv);
     return (dataCsv)
-        .map((e) => Candle.fromJson([
-      DateTime.parse(e["Date"]).millisecondsSinceEpoch,
-      e["Open"],
-      e["High"],
-      e["Low"],
-      e["Close"],
-      e["Volume"],
-    ]))
-        .toList()
-        .reversed
+        .map((e) => ChartData(
+            //High, low, open, and close values all are same
+            x: DateTime.parse(e["Date"]),
+            open: double.parse(e["Open"]),
+            high: double.parse(e["High"]),
+            low: double.parse(e["Low"]),
+            close: double.parse(e["Close"])))
         .toList();
   }
 
@@ -112,7 +109,7 @@ class AppController extends GetxController {
 
     _loadCSV(file.path).then((value) {
       // setState(() {
-        candles = value;
+      candles = value;
       // });
       update();
     });
@@ -122,6 +119,13 @@ class AppController extends GetxController {
     final appStorage = await getApplicationDocumentsDirectory();
     final file = File('${appStorage.path}/$name');
     try {
+      if (await file.exists()) {
+        print("file deleted $file");
+        await file.delete();
+        candles.clear();
+        dataCsv.clear();
+      }
+
       final resonse = await Dio().get(url,
           options: Options(
               responseType: ResponseType.bytes,
@@ -135,6 +139,4 @@ class AppController extends GetxController {
       return null;
     }
   }
-
-
 }

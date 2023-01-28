@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             // supportedLocales: [
             //   Locale('en', 'US'),
             // ],
-            home:  HomeView());
+            home: ChartView());
       },
     );
   }

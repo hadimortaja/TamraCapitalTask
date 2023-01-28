@@ -147,7 +147,7 @@ class _ChartViewState extends State<ChartView> {
         ),
         appBar: AppBar(
           title: CustomText(
-            "تمرا",
+            "Tamra",
             fontSize: 15.sp,
             color: AppColors.whiteColor,
             fontWeight: FontWeight.w400,
